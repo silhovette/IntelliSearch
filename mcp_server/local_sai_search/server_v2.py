@@ -77,5 +77,4 @@ async def simple_test(query: str):
 
 
 if __name__ == "__main__":
-    # mcp.run()
-    asyncio.run(simple_test("空调"))
+    mcp.run()
