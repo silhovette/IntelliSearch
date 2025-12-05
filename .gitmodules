@@ -1,0 +1,3 @@
+[submodule "agentoolkit"]
+	path = agentoolkit
+	url = git@github.com:xiyuanyang-code/agentoolkit.git
