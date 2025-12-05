@@ -233,6 +233,10 @@ mcp_server/local_sai_search/crawling/pages/notice_raw
 mcp_server/local_sai_search/crawling/data
 mcp_server/local_sai_search/crawling/article
 mcp_server/local_sai_search/crawling/articles
+crawling/articles
+
+articles
+wechat_config.json
 
 
 
