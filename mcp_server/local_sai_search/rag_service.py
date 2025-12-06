@@ -24,8 +24,8 @@ async def lifespan(app: FastAPI):
 
     try:
         global_jsv = JSONVectorStoreManager(
-            json_file_path="./document/meta_info.json",
-            persist_directory="./chroma_db_json",
+            json_file_path="./mcp_server/local_sai_search/src/database_json/fix_json.json",
+            persist_directory="./mcp_server/local_sai_search/src/chroma_db_json",
         )
         logger.info("✅ [RAG Service] 数据库加载完成，模型已就绪！")
     except Exception as e:

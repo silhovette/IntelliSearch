@@ -21,6 +21,25 @@ dependencies = [
     "rich>=14.2.0",
     "uvicorn>=0.38.0",
     "wikipedia-mcp>=1.6.0",
+    "loguru",
+]
+[project.optional-dependencies]
+rag = [
+    "langchain>=0.2.0",
+    "langchain-community>=0.2.0",
+    "langchain-core>=0.2.0",
+    "langchain-openai>=0.0.5",
+    "langchain-chroma>=0.1.5",
+    "langchain-text-splitters>=0.0.1",
+    "tiktoken>=0.5.0",
+    "pypdf>=3.0.0",
+    
+    "sentence-transformers>=2.2.2",
+    "chromadb>=0.5.3",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "langchain-huggingface>=0.1.0",
+    "sentence-transformers>=3.0.0", 
 ]
 
 [[tool.uv.index]]
