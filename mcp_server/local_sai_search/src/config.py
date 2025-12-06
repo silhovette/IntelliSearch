@@ -24,8 +24,6 @@ class Config:
             "EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2"
         )
         self.LOCAL_MODEL = self.get_env("LOCAL_MODEL", "llama2")
-        self.OPENAI_API_KEY = self.get_env("OPENAI_API_KEY", "")
-        self.OPENAI_MODEL = self.get_env("OPENAI_MODEL", "gpt-3.5-turbo")
         self.SEARCH_K = int(self.get_env("SEARCH_K", "3"))
         self.validate_config()
 

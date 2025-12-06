@@ -86,7 +86,7 @@ main() {
     stop_service "后端" "$PROJECT_ROOT/.backend.pid" "8000"
 
     # 停止前端服务
-    stop_service "前端" "$PROJECT_ROOT/.frontend.pid" "3000"
+    stop_service "前端" "$PROJECT_ROOT/.frontend.pid" "3020"
 
     # 清理可能残留的Python进程
     log_info "清理残留进程..."

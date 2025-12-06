@@ -11,7 +11,7 @@ import sys
 from typing import Dict, Any, List
 
 # Backend server configuration
-BACKEND_URL = "http://localhost:8889"
+BACKEND_URL = "http://localhost:39256"
 
 
 class IPythonBackendTester:
@@ -596,7 +596,11 @@ print(f"Sum of Fibonacci numbers: {total}")
             and "Sum of Fibonacci" in result_text
         )
 
-        self.log_test("Large Code Execution", passed, f"Large code execution - result contains expected outputs: {passed}")
+        self.log_test(
+            "Large Code Execution",
+            passed,
+            f"Large code execution - result contains expected outputs: {passed}",
+        )
 
     def test_23_execute_all_cells(self):
         """Test executing all cells in a session."""
@@ -681,7 +685,9 @@ print(f"Sum of Fibonacci numbers: {total}")
 
         # Add a cell and execute it through execute-cell endpoint
         cell_response = self.make_request(
-            "POST", f"/sessions/{session_id}/cells", {"code": "status_var = 42\nprint('Cell executed')"}
+            "POST",
+            f"/sessions/{session_id}/cells",
+            {"code": "status_var = 42\nprint('Cell executed')"},
         )
 
         if cell_response["status_code"] != 200:
@@ -691,9 +697,7 @@ print(f"Sum of Fibonacci numbers: {total}")
         cell_id = cell_response["data"]["cell_id"]
 
         # Execute the specific cell
-        self.make_request(
-            "POST", f"/sessions/{session_id}/execute-cell/{cell_id}"
-        )
+        self.make_request("POST", f"/sessions/{session_id}/execute-cell/{cell_id}")
 
         # Get execution status
         response = self.make_request("GET", f"/sessions/{session_id}/execution-status")

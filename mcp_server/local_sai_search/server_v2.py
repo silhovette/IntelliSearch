@@ -16,7 +16,7 @@ from utils.log_config import setup_logging
 setup_logging(log_file_path="./log/mcp_server.log")
 logger = logging.getLogger("MCP_Server")
 mcp = FastMCP("local-rag-database")
-PORT = 23225
+PORT = 39255
 RAG_SERVICE_URL = f"http://127.0.0.1:{PORT}/search"
 
 

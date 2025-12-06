@@ -9,77 +9,75 @@
 > [!IMPORTANT]
 > The boundaries of searching capabilities are the boundaries of agents.
 
-IntelliSearch is an intelligent search aggregation platform based on the MCP (Model Context Protocol) protocol, designed to enhance the search boundary capabilities of agents, enabling models to handle more complex search tasks. IntelliSearch integrates multiple high-quality MCP search tools, including:
+IntelliSearch 是一个基于 MCP (Model Context Protocol) 协议的智能搜索聚合平台，旨在提升智能体的搜索边界能力，让模型能够服务于更复杂的搜索任务。智搜集成了多种 MCP 优质搜索工具，包括：
 
-- Classic and powerful web search tools (`Google Search`, `ZHIPU_search`, `web_parse`)
-- Geographic information search (Amap MCP Server)
-- Bilibili video search (Bilibili MCP Server)
-- Douban movie review search (Douban MCP Server)
-- Academic search (Scholar Search Server)
-- 12306 train information search (12306 MCP Server)
-- WeChat Official Account search (Wechat Search)
-- SAI self-built database search (SAI Local Search)
-- Python code execution (IPython MCP Server), providing agents with powerful dynamic code execution environment.
+- 经典强大网页搜索工具 (`Google Search`, `ZHIPU_search`, `web_parse`)
+- 地理信息搜索 (Amap MCP Server)
+- Bilibili 视频搜索 (Bilibili MCP Server)
+- 豆瓣影评搜索 (Douban MCP Server)
+- 学术搜索 (Scholar Search Server)
+- 12306 火车信息搜索 (12306 MCP Server)
+- 微信公众号搜索 (Wechat Search)
+- SAI 自建数据库搜索 (SAI Local Search)
+- Python 代码执行 (IPython MCP Server)，为智能体提供强大的动态代码执行环境。
 
-## Demo
-
-> [!NOTE]
-> To be released in the future.
-
-## Developer Guide
+## 演示
 
 > [!NOTE]
-> Below is a concise development and reproduction guide for developers. PRs are welcome!
+> 将在未来版本中发布。
 
-If you have any problems, contact [yangxiyuan@sjtu.edu.cn](mailto:yangxiyuan@sjtu.edu.cn)!
+## 开发者指南
 
-### Environment Setup
+> [!NOTE]
+> 下面为开发者提供了极简的开发和复现指南，欢迎 PR！
 
-#### Clone the Project
+如有任何问题，请联系 [yangxiyuan@sjtu.edu.cn](mailto:yangxiyuan@sjtu.edu.cn)！
+
+### 环境准备
 
 ```bash
 # clone the project
 git clone https://github.com/xiyuanyang-code/IntelliSearch.git
 
-# initialize submodules
+# 初始化子模块
 git submodule init
 
-# install dependencies
+# install dependency
 uv sync
 source .venv/bin/activate
 ```
 
-### Pre-Usage Configuration
+### 使用前配置
 
-#### API Key Configuration
+#### API 密钥配置
 
-Create a `.env` file and write the following environment variables:
+创建 `.env` 文件并写入如下的环境变量：
 
 ```bash
-# OPENAI_API_KEY supports OpenAI SDK mode
+# OPENAI_API_KEY 支持 OpenAI SDK 模式
 OPENAI_API_KEY=your-api-key
 BASE_URL=your-base-url
 
-# ZHIPU_API_KEY supports web search
+# ZHIPU_API_KEY 支持网页搜索
 ZHIPU_API_KEY=your-api-key
 ZHIPU_BASE_URL=https://open.bigmodel.cn/api/paas/v4/
 
-# SERPER_API_KEY for web search and other tools
+# SERPER_API_KEY 网页搜索等一系列工具
 SERPER_API_KEY=your-api-key
 ```
 
-To ensure the normal execution of agent conversation and search functions, the following API keys need to be set:
+为了保证智能体对话及搜索功能的正常执行，需要设置如下的 API 密钥：
 
-- Model API key and baseurl, supporting OpenAI SDK Format.
-- `ZHIPU_API_KEY` is mainly used for high-quality Chinese web search
-    - [ZHIPU_OFFICIAL_WEBSITES](https://bigmodel.cn/usercenter/proj-mgmt/apikeys) can be used to register for model services
-    - Additionally, this key can also be used for model services
-- `SERPER_API_KEY` is mainly used for Google series high-quality information source search
-    - [SERPER_OFFICIAL_WEBSITES](https://serper.dev/dashboard), each new registered user gets 2500 credits of free quota.
+- 模型的 API 密钥和 baseurl，支持 OpenAI SDK Format。
+- `ZHIPU_API_KEY` 主要用于中文高质量网页搜索
+    - [ZHIPU_OFFICIAL_WEBSITES](https://bigmodel.cn/usercenter/proj-mgmt/apikeys) 可以在此处注册模型服务
+    - 同时，该密钥也可以用于模型服务
+- `SERPER_API_KEY` 主要用于谷歌系列的高质量信息源搜索
+    - [SERPER_OFFICIAL_WEBSITES](https://serper.dev/dashboard)，每个初始注册用户有 2500 credits 的免费额度。
 
-#### MCP Server Configuration
+#### MCP 服务器配置
 
-To ensure speed and stability, all search tools used are **deployed locally** and use stdio as the communication method for MCP. Before starting MCP Servers, the following configurations need to be made:
+为了保证速度和稳定性，用到的搜索工具都**采用本地部署**并且使用 stdio 的方式作为 MCP 的通信方式。在启动 MCP Server 之前需要做如下配置：
 
 - Copy `config.json` from `config.example.json`:
     - See [Config Example](./config.example.json) for more details
@@ -93,58 +91,59 @@ To ensure speed and stability, all search tools used are **deployed locally** an
 > [!IMPORTANT]
 > All stdio mcp servers are supported! You can easily add your custom tools and mcp servers yourself.
 
-#### SAI Local Search Configuration
+#### SAI 本地搜索配置
 
-This repository uses a RAG system to search the SAI self-built high-quality database and separates it as a FastAPI backend service. Therefore, before local deployment, you need to deploy the `models/all-MiniLM-L6-v2` folder in the `./models` folder. You can download the model through [HuggingFace](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) or [ModelScope](https://www.modelscope.cn/models/AI-ModelScope/all-MiniLM-L6-v2). Specific download commands can be found on the official websites.
+本仓库使用 RAG 系统来针对 SAI 自建高质量数据库进行检索，并且分离为 FastAPI 后端服务。因此，在本地部署之前，需要在 `./models` 文件夹下部署 `models/all-MiniLM-L6-v2` 文件夹。下载模型可以通过 [HuggingFace](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) 或者 [ModelScope](https://www.modelscope.cn/models/AI-ModelScope/all-MiniLM-L6-v2) 进行下载，具体的下载命令详见官网。
 
-#### Backend Service Startup
 
-In the MCP Server, `ipython-mcp` and `sai-local-search` require backend service communication, so you need to start the backend services before using them:
+#### 后端服务启动
 
-- `ipython-mcp` is deployed on local port 39255
-- `local_sai_search` is deployed on local port 39256
+在 MCP Server 中，`ipython-mcp` 和 `sai-local-search` 是需要后端服务通信的，因此需要在使用之前启动后端服务：
+
+- `ipython-mcp` 部署在本地 39255 端口
+- `local_sai_search` 部署在本地 39256 端口
 
 ```bash
-# Clear corresponding ports and start services
+# 清除对应端口并且启动服务
 bash scripts/backend.sh
 
-# Check current service status
+# 检查当前的服务状态
 bash scripts/backend.sh status
 
-# Terminate services
+# 终止服务
 bash scripts/backend.sh stop
 ```
 
-### Usage
+### 使用方法
 
 > [!IMPORTANT]
-> Please ensure you have completed the above configuration process before proceeding with this section.
+> 在此部分之前，请务必确保已经完成了上述的配置流程。
 
-The IntelliSearch project provides two usage methods for users:
+智搜项目为用户提供了两种使用方式：
 
-- **CLI Usage**: Direct use in the command line, efficient and fast, convenient for developers to develop new features
-- **Frontend Usage**: Use FastAPI framework for backend model service deployment, combined with frontend web rendering, suitable for product demonstration and production environment users.
+- **CLI 使用方式**: 直接在命令行中使用，高效快捷，方便开发者开发新功能
+- **前端使用方式**: 使用 FastAPI 框架实现后端模型服务部署，同时搭配前端网页渲染，适合成品展示和生产环境中用户使用。
 
-#### Command Line Usage
+#### 命令行使用
 
 ```bash
 python backend/cli.py
-# Default calls DeepSeek-V3 model (using official API)
+# 默认调用模型 DeepSeek-V3（使用官网 API）
 ```
 
-Further integration with GLM-4.6 and other API services will follow.
+后续会进一步接入 GLM-4.6 等 API 服务。
 
-#### Frontend Usage
+#### 前端使用
 
 ```bash
-# start all services
+# 启动所有服务
 bash ./scripts/start_all.sh
 
-# stop all services
+# 停止所有服务
 bash ./scripts/stop_services.sh
 ```
 
-### Project File Structure
+### 项目文件结构
 
 ```text
 ├── agentoolkit

@@ -173,7 +173,9 @@ class IPythonBackend:
         logger.info(f"Deleted cell {cell_id} from session {session_id}")
         return True
 
-    def _execute_code_internal(self, session: Session, code: str) -> CodeExecutionResponse:
+    def _execute_code_internal(
+        self, session: Session, code: str
+    ) -> CodeExecutionResponse:
         """Internal method to execute Python code in a session."""
         # Prepare execution environment
         local_vars = session.variables
@@ -228,7 +230,9 @@ class IPythonBackend:
         if result.success:
             logger.info(f"Code executed successfully in session {session_id}")
         else:
-            logger.error(f"Code execution failed in session {session_id}: {result.error}")
+            logger.error(
+                f"Code execution failed in session {session_id}: {result.error}"
+            )
 
         return result
 
@@ -421,7 +425,9 @@ async def execute_specific_cell(session_id: str, cell_id: int):
     if result.success:
         logger.info(f"Cell {cell_id} executed successfully in session {session_id}")
     else:
-        logger.error(f"Cell {cell_id} execution failed in session {session_id}: {result.error}")
+        logger.error(
+            f"Cell {cell_id} execution failed in session {session_id}: {result.error}"
+        )
 
     return CodeExecutionResponse(
         result=result.result, success=result.success, error=result.error
@@ -469,4 +475,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8889)
+
+    uvicorn.run(app, host="0.0.0.0", port=39256)

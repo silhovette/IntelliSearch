@@ -5,6 +5,7 @@ import os
 import logging
 import uuid
 import json
+import dotenv
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from fastapi import APIRouter, HTTPException
@@ -26,9 +27,14 @@ router = APIRouter(prefix="/api/chat", tags=["chat"])
 # 存储会话的内存字典
 sessions: Dict[str, ChatSession] = {}
 
+dotenv.load_dotenv(override=True)
+
 # 初始化LLM客户端
 try:
-    llm_client = LLMClient()
+    llm_client = LLMClient(
+        model_name="deepseek-chat",
+        base_url=os.environ.get("BASE_URL")
+    )
 except Exception as e:
     logging.error(f"Failed to initialize LLM client: {e}")
     llm_client = None

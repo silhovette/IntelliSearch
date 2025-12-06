@@ -5,7 +5,7 @@ IPython MCP Server 为智能体提供了动态执行Python代码的能力，通�
 ## 架构组件
 
 ### 1. FastAPI 后端服务 (`ipython_backend.py`)
-- **端口**: 8889
+- **端口**: 39256
 - **功能**: 提供 REST API 接口管理 session 和 cell
 - **日志**: 记录到 `logs/ipython_backend.log`
 

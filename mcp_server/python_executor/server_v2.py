@@ -4,7 +4,7 @@ import json
 from typing import Dict, Any, Optional
 
 # Configuration for the IPython backend server
-BACKEND_URL = "http://localhost:8889"
+BACKEND_URL = "http://localhost:39256"
 
 mcp = FastMCP("ipython-mcp-server-v2")
 

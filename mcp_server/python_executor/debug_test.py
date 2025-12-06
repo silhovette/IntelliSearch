@@ -6,7 +6,8 @@ Debug test for IPython backend to isolate issues with code execution
 import requests
 import json
 
-BACKEND_URL = "http://localhost:8889"
+BACKEND_URL = "http://localhost:39256"
+
 
 def test_basic_execution():
     """Test basic code execution to ensure backend is working"""
@@ -14,8 +15,9 @@ def test_basic_execution():
 
     try:
         # Create session
-        session_response = requests.post(f"{BACKEND_URL}/sessions",
-                                        headers={"Content-Type": "application/json"})
+        session_response = requests.post(
+            f"{BACKEND_URL}/sessions", headers={"Content-Type": "application/json"}
+        )
         print(f"Create session status: {session_response.status_code}")
 
         if session_response.status_code != 200:
@@ -27,9 +29,11 @@ def test_basic_execution():
 
         # Test simple variable assignment
         simple_code = "x = 42\nprint(f'x = {x}')"
-        exec_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/execute",
-                                     headers={"Content-Type": "application/json"},
-                                     json={"code": simple_code})
+        exec_response = requests.post(
+            f"{BACKEND_URL}/sessions/{session_id}/execute",
+            headers={"Content-Type": "application/json"},
+            json={"code": simple_code},
+        )
 
         print(f"Simple execution status: {exec_response.status_code}")
         if exec_response.status_code == 200:
@@ -49,9 +53,11 @@ result = test_func(5)
 print(f'test_func(5) = {result}')
 """
 
-        func_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/execute",
-                                    headers={"Content-Type": "application/json"},
-                                    json={"code": func_code})
+        func_response = requests.post(
+            f"{BACKEND_URL}/sessions/{session_id}/execute",
+            headers={"Content-Type": "application/json"},
+            json={"code": func_code},
+        )
 
         print(f"Function execution status: {func_response.status_code}")
         if func_response.status_code == 200:
@@ -72,9 +78,11 @@ fib_result = fibonacci(5)
 print(f'fibonacci(5) = {fib_result}')
 """
 
-        fib_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/execute",
-                                    headers={"Content-Type": "application/json"},
-                                    json={"code": fib_code})
+        fib_response = requests.post(
+            f"{BACKEND_URL}/sessions/{session_id}/execute",
+            headers={"Content-Type": "application/json"},
+            json={"code": fib_code},
+        )
 
         print(f"Fibonacci execution status: {fib_response.status_code}")
         if fib_response.status_code == 200:
@@ -83,7 +91,7 @@ print(f'fibonacci(5) = {fib_result}')
             print(f"Result: {result['result'][:200]}...")
 
             # Check if result contains expected output
-            if "fibonacci(5) = 5" in result['result']:
+            if "fibonacci(5) = 5" in result["result"]:
                 print("✅ Fibonacci test PASSED")
                 return True
             else:
@@ -105,14 +113,16 @@ print(f'fibonacci(5) = {fib_result}')
         except:
             pass
 
+
 def test_cell_execution():
     """Test cell-based execution"""
     print("\n=== Testing Cell Execution ===")
 
     try:
         # Create session
-        session_response = requests.post(f"{BACKEND_URL}/sessions",
-                                        headers={"Content-Type": "application/json"})
+        session_response = requests.post(
+            f"{BACKEND_URL}/sessions", headers={"Content-Type": "application/json"}
+        )
 
         if session_response.status_code != 200:
             print(f"Session creation failed: {session_response.text}")
@@ -124,13 +134,17 @@ def test_cell_execution():
         # Add cells
         cell1_code = "base_value = 10\nprint(f'Set base_value: {base_value}')"
         cell2_code = "multiplier = 5\nresult = base_value * multiplier\nprint(f'base_value * multiplier = {result}')"
-        cell3_code = "final_result = result + 100\nprint(f'Final result: {final_result}')"
+        cell3_code = (
+            "final_result = result + 100\nprint(f'Final result: {final_result}')"
+        )
 
         cells = []
         for i, code in enumerate([cell1_code, cell2_code, cell3_code], 1):
-            cell_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/cells",
-                                         headers={"Content-Type": "application/json"},
-                                         json={"code": code})
+            cell_response = requests.post(
+                f"{BACKEND_URL}/sessions/{session_id}/cells",
+                headers={"Content-Type": "application/json"},
+                json={"code": code},
+            )
             print(f"Add cell {i} status: {cell_response.status_code}")
 
             if cell_response.status_code == 200:
@@ -142,8 +156,10 @@ def test_cell_execution():
                 return False
 
         # Execute all cells
-        exec_all_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/execute-all",
-                                         headers={"Content-Type": "application/json"})
+        exec_all_response = requests.post(
+            f"{BACKEND_URL}/sessions/{session_id}/execute-all",
+            headers={"Content-Type": "application/json"},
+        )
 
         print(f"Execute all cells status: {exec_all_response.status_code}")
         if exec_all_response.status_code == 200:
@@ -152,7 +168,7 @@ def test_cell_execution():
             print(f"Result preview: {result['result'][:300]}...")
 
             # Check if result contains expected output
-            if "Final result: 150" in result['result']:
+            if "Final result: 150" in result["result"]:
                 print("✅ Execute All Cells test PASSED")
                 return True
             else:
@@ -173,6 +189,7 @@ def test_cell_execution():
             requests.delete(f"{BACKEND_URL}/sessions/{session_id}")
         except:
             pass
+
 
 if __name__ == "__main__":
     print("Testing IPython Backend...")

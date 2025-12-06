@@ -27,6 +27,6 @@
 我希望你在 `run.sh` 中可以控制启动若干后端服务，注意！MCP Server 的启动服务和这个脚本无关，现在，你需要更新 `run.sh` 并启动：
 
 - local sai search 的端口（端口 23225）
-- ipython backend 的后端端口（端口 8889）
+- ipython backend 的后端端口（端口 39256）
 
 你可以根据 README 中设计的功能来实现你的脚本

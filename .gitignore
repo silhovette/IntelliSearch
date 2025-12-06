@@ -241,7 +241,8 @@ output
 data
 config/data_generation.yaml
 
-
+uv.lock
+**.pid
 
 
 

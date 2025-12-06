@@ -6,7 +6,8 @@ Quick test to verify Execute All Cells fix
 import requests
 import json
 
-BACKEND_URL = "http://localhost:8889"
+BACKEND_URL = "http://localhost:39256"
+
 
 def test_execute_all_cells():
     """Test the Execute All Cells functionality"""
@@ -14,8 +15,9 @@ def test_execute_all_cells():
 
     try:
         # Create a fresh session
-        session_response = requests.post(f"{BACKEND_URL}/sessions",
-                                        headers={"Content-Type": "application/json"})
+        session_response = requests.post(
+            f"{BACKEND_URL}/sessions", headers={"Content-Type": "application/json"}
+        )
         print(f"Create session status: {session_response.status_code}")
 
         if session_response.status_code != 200:
@@ -33,9 +35,11 @@ def test_execute_all_cells():
         ]
 
         for i, code in enumerate(cells_data, 1):
-            cell_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/cells",
-                                         headers={"Content-Type": "application/json"},
-                                         json={"code": code})
+            cell_response = requests.post(
+                f"{BACKEND_URL}/sessions/{session_id}/cells",
+                headers={"Content-Type": "application/json"},
+                json={"code": code},
+            )
             print(f"Add cell {i} status: {cell_response.status_code}")
 
             if cell_response.status_code != 200:
@@ -46,8 +50,10 @@ def test_execute_all_cells():
             print(f"Cell {i} ID: {cell_id}")
 
         # Execute all cells
-        exec_all_response = requests.post(f"{BACKEND_URL}/sessions/{session_id}/execute-all",
-                                         headers={"Content-Type": "application/json"})
+        exec_all_response = requests.post(
+            f"{BACKEND_URL}/sessions/{session_id}/execute-all",
+            headers={"Content-Type": "application/json"},
+        )
 
         print(f"Execute all cells status: {exec_all_response.status_code}")
         if exec_all_response.status_code == 200:
@@ -56,7 +62,7 @@ def test_execute_all_cells():
             print(f"Result preview: {result['result'][:200]}...")
 
             # Check if result contains expected output
-            if "Final result: 150" in result['result']:
+            if "Final result: 150" in result["result"]:
                 print("✅ Execute All Cells test PASSED - Found 'Final result: 150'")
                 print("✅ Cell dependency working correctly!")
                 return True
@@ -79,6 +85,7 @@ def test_execute_all_cells():
             print("✅ Session cleaned up")
         except:
             pass
+
 
 if __name__ == "__main__":
     success = test_execute_all_cells()

@@ -5,6 +5,8 @@ import os
 import logging
 import json
 import asyncio
+import dotenv
+dotenv.load_dotenv(override=True)
 from typing import List, Dict, Any, Optional, AsyncGenerator
 from openai import OpenAI
 
@@ -17,9 +19,9 @@ class LLMClient:
 
     def __init__(
         self,
-        model_name: str = "deepseek-chat",
-        base_url: str = "https://api.deepseek.com",
-        api_key_env: str = "DEEPSEEK_API_KEY"
+        model_name: str = "default_model",
+        base_url: str = "EMPTY",
+        api_key_env: str = "OPENAI_API_KEY"
     ):
         self.model_name = model_name
         self.base_url = base_url

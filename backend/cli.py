@@ -19,6 +19,7 @@ from pathlib import Path
 from openai import OpenAI
 from typing import List, Dict, Any, Optional, AsyncGenerator
 from datetime import datetime
+from zai import ZhipuAiClient
 from mcp_module.server_manager import MultiServerManager
 from mcp.types import CallToolResult
 from colorama import Fore, Style, init
@@ -28,7 +29,7 @@ from backend.tool_hash import fix_tool_args
 
 
 init(autoreset=True)
-dotenv.load_dotenv()
+dotenv.load_dotenv(override=True)
 setup_logging(log_file_path="./log/mcp.log", project_prefix="IntelliSearch Main")
 
 
@@ -36,13 +37,11 @@ class MCPChat:
     def __init__(
         self,
         model_name: str = "deepseek-chat",
-        base_url: str = "https://api.deepseek.com",
         system_prompt: str = "You are a helpful assistant",
         server_config_path: str = "./config.json",
         max_tool_call: int = 5,
     ):
         self.model_name = model_name
-        self.base_url = base_url
         self.history = []
         self.system_prompt = system_prompt
         self.history.append({"role": "system", "content": system_prompt})
@@ -51,12 +50,13 @@ class MCPChat:
         self.max_tool_call = int(max_tool_call)
         os.makedirs(self.result_dir, exist_ok=True)
 
-        api_key = os.environ.get("DEEPSEEK_API_KEY")
+        self.base_url = os.environ.get("BASE_URL")
+        api_key = os.environ.get("OPENAI_API_KEY")
         if not api_key:
             raise ValueError(
-                "Environment variable 'DEEPSEEK_API_KEY' not found. Please set it."
+                "Environment variable 'OPENAI_API_KEY' not found. Please set it."
             )
-
+        
         self.client = OpenAI(api_key=api_key, base_url=self.base_url)
 
         # handle mcp settings and connecting mcp servers

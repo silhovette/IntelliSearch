@@ -2,7 +2,7 @@ import asyncio
 import httpx
 from typing import List, Dict
 
-RAG_SERVICE_URL = "http://127.0.0.1:23225/search"
+RAG_SERVICE_URL = "http://127.0.0.1:39255/search"
 TIMEOUT = 10.0
 
 
