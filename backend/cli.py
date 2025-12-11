@@ -632,7 +632,7 @@ class MCPChat:
 
 
 async def query(chat_client: MCPChat, user_query):
-    console.print("\n" + "[bold green]✨ Model Response:[/bold green]")
+    # console.print("\n" + "[bold green]Model Response:[/bold green]")
     result = await chat_client.process_query(
         user_message=user_query,
         stream=False,
@@ -655,13 +655,14 @@ if __name__ == "__main__":
 
     console = Console()
     chat_client = MCPChat(
-        model_name=args.model_name,
+        # model_name=args.model_name,
+        model_name="glm-4.5",
         system_prompt=args.system_prompt,
         max_tool_call=args.max_tool_calls,
     )
     while True:
-        user_input = prompt("Input your query: ")
-        if str(user_input).lower() in ("exit", "quit", "q"):
+        user_input = prompt("Input your qquery: ")
+        if str(user_input).lower() == "/exit":
             console.print("[bold red]Exiting... Goodbye! 👋[/bold red]")
             break
         asyncio.run(query(chat_client=chat_client, user_query=user_input))
