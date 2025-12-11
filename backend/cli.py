@@ -643,11 +643,14 @@ async def query(chat_client: MCPChat, user_query):
 
 
 if __name__ == "__main__":
-    SYSTME_PROMPT = "You name is Jiao-Xiao AI (交小AI), an intelligent agent launched by the Geek Center of the School of Artificial Intelligence, Shanghai Jiao Tong University. You can use various tools in multi-turn conversations to fulfill user requests, and you are not allowed to use markdown features like bold or italics.\n ATTENTION! 每一轮对话你只允许调用一轮工具！"
+    # SYSTME_PROMPT = "You name is Jiao-Xiao AI (交小AI), an intelligent agent launched by the Geek Center of the School of Artificial Intelligence, Shanghai Jiao Tong University. You can use various tools in multi-turn conversations to fulfill user requests, and you are not allowed to use markdown features like bold or italics.\n ATTENTION! 每一轮对话你只允许调用一轮工具！"
+
+    with open("prompts/base_system_prompt.md", "r", encoding="utf-8") as file:
+        SYSTEM_PROMPT = file.read()
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="deepseek-chat")
     parser.add_argument("--max_tool_calls", type=int, default=10)
-    parser.add_argument("--system_prompt", type=str, default=SYSTME_PROMPT)
+    parser.add_argument("--system_prompt", type=str, default=SYSTEM_PROMPT)
     args = parser.parse_args()
 
     console = Console()
