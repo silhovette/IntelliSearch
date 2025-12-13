@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Token Usage - IntelliSearch Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+{% endblock %}
+
+{% block body_class %}admin-page{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon admin-logo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="logo-text">Admin Panel</span>
+                    <span class="logo-subtitle">IntelliSearch</span>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+            <a href="{{ url_for('admin_users') }}" class="nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                Users
+            </a>
+            <a href="{{ url_for('admin_chats') }}" class="nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Chat Logs
+            </a>
+            <a href="{{ url_for('admin_tokens') }}" class="nav-item active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+                Token Usage
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="{{ url_for('desktop_chat') }}" class="nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Back to Chat
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item nav-item-danger">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Logout
+            </a>
+        </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="admin-main">
+        <header class="admin-header">
+            <div>
+                <h1>Token Usage</h1>
+                <p class="text-muted">Monitor token consumption and costs</p>
+            </div>
+        </header>
+        
+        <div class="admin-content">
+            <!-- Daily Usage Chart -->
+            <div class="card mb-lg">
+                <div class="card-header">
+                    <h3>Daily Token Usage (Last 30 Days)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container chart-container-lg">
+                        {% if daily_usage %}
+                        <div class="bar-chart bar-chart-lg">
+                            {% set max_tokens = daily_usage|map(attribute='tokens')|max or 1 %}
+                            {% for day in daily_usage %}
+                            <div class="bar-item">
+                                <div class="bar" style="height: {{ (day.tokens / max_tokens * 100)|int }}%;">
+                                    <span class="bar-value">{{ day.tokens }}</span>
+                                </div>
+                                <span class="bar-label">{{ day.date[-5:] }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--text-muted);">
+                                <line x1="12" y1="1" x2="12" y2="23"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                            <p class="text-muted mt-md">No token usage data yet</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- User Token Rankings -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Token Rankings</h3>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>User</th>
+                                    <th>Total Tokens</th>
+                                    <th>Today</th>
+                                    <th>Messages</th>
+                                    <th>Avg per Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in user_tokens %}
+                                <tr>
+                                    <td>
+                                        <span class="rank-badge rank-{{ loop.index }}">{{ loop.index }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center gap-sm">
+                                            <div class="avatar avatar-sm" style="background: {{ user.avatar_color }}">
+                                                {{ (user.display_name or user.username)[0] }}
+                                            </div>
+                                            <div>
+                                                <div class="font-medium">{{ user.display_name or user.username }}</div>
+                                                <div class="text-xs text-muted">@{{ user.username }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="token-count">{{ "{:,}".format(user.total_tokens) }}</span>
+                                    </td>
+                                    <td>
+                                        {% if user.today_tokens > 0 %}
+                                        <span class="badge badge-success">+{{ user.today_tokens }}</span>
+                                        {% else %}
+                                        <span class="text-muted">0</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ user.total_messages }}</td>
+                                    <td>
+                                        {% if user.total_messages > 0 %}
+                                        {{ (user.total_tokens / user.total_messages)|int }}
+                                        {% else %}
+                                        0
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted" style="padding: var(--spacing-xl);">
+                                        No token usage data yet
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
