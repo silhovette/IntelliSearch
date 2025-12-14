@@ -31,6 +31,7 @@ dependencies = [
     "bilibili-api>=4.1.0",
     "bilibili-api-python>=17.4.0",
     "zai-sdk>=0.0.4.3",
+    "flask>=3.1.2",
 ]
 [project.optional-dependencies]
 rag = [
