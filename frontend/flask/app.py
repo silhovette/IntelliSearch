@@ -149,35 +149,37 @@ def get_current_user():
 
 def log_chat_message(user_id, session_id, role, content, tokens=0, tool_calls=None):
     """Log a chat message to database."""
-    db = get_db()
-    tool_calls_json = json.dumps(tool_calls) if tool_calls else None
-    db.execute('''
-        INSERT INTO chat_logs (user_id, session_id, role, content, tokens_used, tool_calls)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', (user_id, session_id, role, content, tokens, tool_calls_json))
-    
-    # Update user stats
-    db.execute('''
-        UPDATE users SET total_messages = total_messages + 1, 
-                        total_tokens = total_tokens + ?,
-                        last_active = CURRENT_TIMESTAMP
-        WHERE id = ?
-    ''', (tokens, user_id))
-    
-    db.commit()
+    with app.app_context():
+        db = get_db()
+        tool_calls_json = json.dumps(tool_calls) if tool_calls else None
+        db.execute('''
+            INSERT INTO chat_logs (user_id, session_id, role, content, tokens_used, tool_calls)
+            VALUES (?, ?, ?, ?, ?, ?)
+        ''', (user_id, session_id, role, content, tokens, tool_calls_json))
+
+        # Update user stats
+        db.execute('''
+            UPDATE users SET total_messages = total_messages + 1,
+                            total_tokens = total_tokens + ?,
+                            last_active = CURRENT_TIMESTAMP
+            WHERE id = ?
+        ''', (tokens, user_id))
+
+        db.commit()
 
 
 def update_token_usage(user_id, tokens):
     """Update daily token usage."""
-    db = get_db()
-    today = datetime.now().strftime('%Y-%m-%d')
-    db.execute('''
-        INSERT INTO token_usage (user_id, date, total_tokens)
-        VALUES (?, ?, ?)
-        ON CONFLICT(user_id, date) DO UPDATE SET
-        total_tokens = total_tokens + ?
-    ''', (user_id, today, tokens, tokens))
-    db.commit()
+    with app.app_context():
+        db = get_db()
+        today = datetime.now().strftime('%Y-%m-%d')
+        db.execute('''
+            INSERT INTO token_usage (user_id, date, total_tokens)
+            VALUES (?, ?, ?)
+            ON CONFLICT(user_id, date) DO UPDATE SET
+            total_tokens = total_tokens + ?
+        ''', (user_id, today, tokens, tokens))
+        db.commit()
 
 
 # ============================================================================

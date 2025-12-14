@@ -66,6 +66,15 @@
             });
         }
     </script>
+
+    <!-- Particle Background System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+
+    <!-- Auth Loading Animation (only for auth pages) -->
+    {% if request.endpoint in ['login', 'register'] %}
+    <script src="{{ url_for('static', filename='js/auth-loading.js') }}"></script>
+    {% endif %}
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

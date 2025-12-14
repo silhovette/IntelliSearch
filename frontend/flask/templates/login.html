@@ -3,6 +3,7 @@
 {% block title %}Login - IntelliSearch{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/loading-animation.css') }}">
 <style>
     .auth-container {
         min-height: 100vh;
@@ -11,17 +12,17 @@
         justify-content: center;
         padding: var(--spacing-lg);
     }
-    
+
     .auth-card {
         width: 100%;
         max-width: 420px;
     }
-    
+
     .auth-header {
         text-align: center;
         margin-bottom: var(--spacing-xl);
     }
-    
+
     .auth-logo {
         width: 64px;
         height: 64px;
@@ -36,44 +37,44 @@
         color: white;
         box-shadow: var(--shadow-glow);
     }
-    
+
     .auth-title {
         font-size: 1.5rem;
         margin-bottom: var(--spacing-xs);
     }
-    
+
     .auth-subtitle {
         color: var(--text-muted);
         font-size: 0.9375rem;
     }
-    
+
     .form-group {
         margin-bottom: var(--spacing-lg);
     }
-    
+
     .form-group label {
         display: flex;
         align-items: center;
         gap: var(--spacing-xs);
     }
-    
+
     .form-group label svg {
         width: 1rem;
         height: 1rem;
         color: var(--text-muted);
     }
-    
+
     .auth-footer {
         text-align: center;
         margin-top: var(--spacing-lg);
         padding-top: var(--spacing-lg);
         border-top: 1px solid var(--glass-border);
     }
-    
+
     .auth-footer a {
         font-weight: 500;
     }
-    
+
     .divider {
         display: flex;
         align-items: center;
@@ -82,7 +83,7 @@
         color: var(--text-muted);
         font-size: 0.875rem;
     }
-    
+
     .divider::before,
     .divider::after {
         content: '';

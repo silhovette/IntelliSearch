@@ -1,0 +1,203 @@
+/**
+ * Chat Loading Animation
+ * @fileoverview Animated loading overlay for new chat sessions
+ */
+
+/* Chat loading overlay */
+.chat-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0b0b0c 0%, #0d1111 50%, #101213 100%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out,
+                visibility 0.5s ease-out;
+}
+
+.chat-loading-overlay.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.chat-loading-content {
+    text-align: center;
+    color: var(--text-primary);
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo container and animations */
+.chat-logo-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: var(--spacing-xl);
+}
+
+.chat-loading-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-xl);
+    animation: logoRotate 2s ease-in-out infinite alternate,
+               logoGlow 3s ease-in-out infinite;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.chat-logo-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(127, 255, 212, 0.3) 0%, transparent 70%);
+    border-radius: var(--radius-xl);
+    animation: glowPulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes logoRotate {
+    0% {
+        transform: perspective(1000px) rotateY(0deg) scale(1);
+    }
+    50% {
+        transform: perspective(1000px) rotateY(180deg) scale(1.05);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(360deg) scale(1);
+    }
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(127, 255, 212, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(127, 255, 212, 0.8));
+    }
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+/* Loading title */
+.chat-loading-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0 0 var(--spacing-lg) 0;
+    background: linear-gradient(45deg, #7fffd4, var(--accent-primary), #7fffd4);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Loading subtitle */
+.chat-loading-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Loading dots animation */
+.chat-loading-dots {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+}
+
+.chat-loading-dots span {
+    width: 12px;
+    height: 12px;
+    background: var(--accent-primary);
+    border-radius: var(--radius-full);
+    animation: dotBounce 1.4s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
+}
+
+.chat-loading-dots span:nth-child(1) { animation-delay: 0s; }
+.chat-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.chat-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotBounce {
+    0%, 80%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(-20px) scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+/* Hide main chat content during loading */
+.chat-page .chat-layout {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.chat-page.loaded .chat-layout {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive loading screen */
+@media (max-width: 768px) {
+    .chat-loading-title {
+        font-size: 2rem;
+    }
+
+    .chat-loading-logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .chat-loading-subtitle {
+        font-size: 1rem;
+    }
+}

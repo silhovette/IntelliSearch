@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Loading Animation Test</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat-loading.css') }}">
+</head>
+<body class="desktop-chat chat-page">
+    <!-- Main chat layout (will be hidden initially) -->
+    <div class="chat-layout" style="display: flex; height: 100vh; align-items: center; justify-content: center;">
+        <div style="text-align: center; color: var(--text-primary);">
+            <h1>聊天界面</h1>
+            <p>这是聊天界面的主要内容区域</p>
+            <button class="btn btn-primary" onclick="showLoadingAgain()">重新显示加载动画</button>
+        </div>
+    </div>
+
+    <!-- Particle Background System -->
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
+    <!-- Chat Loading Animation -->
+    <script src="{{ url_for('static', filename='js/chat-loading.js') }}"></script>
+
+    <script>
+        // Override auto-init to show loading on this test page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force show loading animation
+            if (window.ChatLoading) {
+                window.ChatLoading.init(true, '测试页面', '正在测试加载动画效果...');
+            }
+        });
+
+        function showLoadingAgain() {
+            if (window.ChatLoading) {
+                window.ChatLoading.stop();
+                setTimeout(() => {
+                    window.ChatLoading.init(true, '重新测试', '再次显示加载动画...');
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>
