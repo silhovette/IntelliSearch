@@ -6,6 +6,12 @@
 
 # IntelliSearch
 
+<div style="text-align: center;">
+  <a href="https://git.io/typing-svg">
+    <img src="./assets/IntelliSearch.png" alt="IntelliSearch" />
+  </a>
+</div>
+
 > [!IMPORTANT]
 > The boundaries of searching capabilities are the boundaries of agents.
 
