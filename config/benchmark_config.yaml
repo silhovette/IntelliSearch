@@ -153,7 +153,7 @@ llm:
   # Token increment
   token_increment: 1000
   # Format conversion token limit
-  format_conversion_tokens: 8000
+  format_conversion_tokens: 8001
   # Planning token limit
   planning_tokens: 12000
   # Summarization maximum tokens
@@ -198,7 +198,7 @@ dependency_extraction:
 # Server selection configuration
 server_selection:
   # Server selection token limit
-  selection_tokens: 8000
+  selection_tokens: 8001
   # Tool sample count (for display)
   tool_sample_count: 3
 

@@ -141,6 +141,6 @@ python backend/cli_v2.py
 python frontend/flask/app.py
 
 # 后端服务启动
-# 后端默认端口 8000 端口
+# 后端默认端口 8001 端口
 python backend/main_fastapi.py
 ```

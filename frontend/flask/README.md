@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 ```bash
 # Optional: Set custom backend URL
-export BACKEND_URL=http://localhost:8000
+export BACKEND_URL=http://localhost:8001
 
 # Optional: Set Flask secret key
 export FLASK_SECRET_KEY=your-secret-key

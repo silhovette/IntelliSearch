@@ -13,6 +13,7 @@ dotenv.load_dotenv(override=True)
 from mcp.server.fastmcp import FastMCP
 
 sys.path.append(os.getcwd())
+sys.path.append(os.path.join(os.getcwd(), ".."))
 from utils.log_config import setup_logging
 
 setup_logging(log_file_path="./log/mcp_server.log")
@@ -80,7 +81,7 @@ async def local_search(query: str):
     payload = {"query": query, "score_threshold": 0.3}
 
     try:
-        # 使用异步 HTTP 客户端调用本地的 8000 端口服务
+        # 使用异步 HTTP 客户端调用本地的 8001 端口服务
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 RAG_SERVICE_URL,

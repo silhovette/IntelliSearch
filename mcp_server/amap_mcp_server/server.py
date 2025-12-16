@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional
 def get_api_key() -> str:
     """Get the Amap Maps API key from environment variables"""
     api_key = os.getenv("AMAP_MAPS_API_KEY")
+    return api_key
 
 
 def print_data(line: str):
@@ -1287,3 +1288,4 @@ if __name__ == "__main__":
         help="Transport type (stdio, sse, or streamable-http)",
     )
     args = parser.parse_args()
+    mcp.run()

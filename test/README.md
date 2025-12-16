@@ -27,7 +27,7 @@ python3 test/quick_test.py
 
 **使用方法：**
 ```bash
-# 使用默认URL (http://localhost:8000)
+# 使用默认URL (http://localhost:8001)
 python3 test/test_backend_api.py
 
 # 指定自定义URL
@@ -64,7 +64,7 @@ bash test/run_tests.sh
 python3 scripts/start_backend.py
 
 # 方式2：直接使用uvicorn
-uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8000
+uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8001
 ```
 
 ### 2. Python依赖
@@ -74,7 +74,7 @@ pip3 install requests aiohttp
 ```
 
 ### 3. 端口确认
-确认后端服务运行在正确的端口（默认8000）。
+确认后端服务运行在正确的端口（默认8001）。
 
 ## 测试内容说明
 
@@ -124,7 +124,7 @@ tail -f logs/backend.log
 
 2. 测试网络连接：
 ```bash
-curl http://localhost:8000/
+curl http://localhost:8001/
 ```
 
 3. 检查进程：

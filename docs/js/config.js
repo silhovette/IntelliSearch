@@ -18,7 +18,7 @@ export const CONFIG = {
   },
 
   // Backend configuration
-  BACKEND_URL: 'http://localhost:8000',
+  BACKEND_URL: 'http://localhost:8001',
 
   // Animation timing
   ANIMATION: {

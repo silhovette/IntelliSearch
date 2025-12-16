@@ -141,6 +141,6 @@ IntelliSearch also supports local web deployment with FastAPI backend for standa
 python frontend/flask/app.py
 
 # Start backend service
-# Backend default port 8000
+# Backend default port 8001
 python backend/main_fastapi.py
 ```

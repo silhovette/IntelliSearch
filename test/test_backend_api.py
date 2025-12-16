@@ -10,10 +10,11 @@ import requests
 import aiohttp
 from typing import Dict, Any, Optional
 
+
 class BackendAPITest:
     """后端API测试类"""
 
-    def __init__(self, base_url: str = "http://localhost:8000"):
+    def __init__(self, base_url: str = "http://localhost:8001"):
         self.base_url = base_url
         self.session = None
 
@@ -49,9 +50,11 @@ class BackendAPITest:
                 if response.status == 200:
                     data = await response.json()
                     print(f"可用工具数量: {len(data.get('tools', []))}")
-                    tools_list = data.get('tools', [])
+                    tools_list = data.get("tools", [])
                     for tool in tools_list[:3]:  # 只显示前3个工具
-                        print(f"  - {tool.get('name', 'Unknown')}: {tool.get('description', '')[:80]}...")
+                        print(
+                            f"  - {tool.get('name', 'Unknown')}: {tool.get('description', '')[:80]}..."
+                        )
                     return True
                 else:
                     error_data = await response.text()
@@ -67,14 +70,14 @@ class BackendAPITest:
             payload = {
                 "message": message,
                 "session_id": "test_session_001",
-                "use_tools": True
+                "use_tools": True,
             }
 
             print(f"发送测试消息: {message}")
             async with self.session.post(
                 f"{self.base_url}/api/chat/stream",
                 json=payload,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
             ) as response:
                 print(f"聊天流式接口状态码: {response.status}")
 
@@ -87,23 +90,23 @@ class BackendAPITest:
                 error_received = False
 
                 async for line in response.content:
-                    line = line.decode('utf-8').strip()
-                    if line.startswith('data: ') and line != 'data: [DONE]':
+                    line = line.decode("utf-8").strip()
+                    if line.startswith("data: ") and line != "data: [DONE]":
                         try:
                             data = json.loads(line[6:])
-                            event_type = data.get('type', '')
+                            event_type = data.get("type", "")
 
-                            if event_type == 'content':
-                                content = data.get('content', '')
+                            if event_type == "content":
+                                content = data.get("content", "")
                                 print(f"收到内容: {content[:100]}...")
                                 content_received = True
-                            elif event_type == 'tool_call':
-                                tool_name = data.get('tool_name', '')
+                            elif event_type == "tool_call":
+                                tool_name = data.get("tool_name", "")
                                 print(f"工具调用: {tool_name}")
-                            elif event_type == 'tool_result':
+                            elif event_type == "tool_result":
                                 print(f"工具结果收到")
-                            elif event_type == 'error':
-                                error_msg = data.get('error', '')
+                            elif event_type == "error":
+                                error_msg = data.get("error", "")
                                 print(f"收到错误: {error_msg}")
                                 error_received = True
 
@@ -116,25 +119,27 @@ class BackendAPITest:
             print(f"聊天流式测试异常: {e}")
             return False
 
-    async def test_chat_non_stream(self, message: str = "简单回答：1+1等于几？") -> bool:
+    async def test_chat_non_stream(
+        self, message: str = "简单回答：1+1等于几？"
+    ) -> bool:
         """测试非流式聊天接口"""
         try:
             payload = {
                 "message": message,
                 "session_id": "test_session_002",
-                "use_tools": False
+                "use_tools": False,
             }
 
             async with self.session.post(
                 f"{self.base_url}/api/chat",
                 json=payload,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
             ) as response:
                 print(f"非流式聊天接口状态码: {response.status}")
 
                 if response.status == 200:
                     data = await response.json()
-                    content = data.get('content', '')
+                    content = data.get("content", "")
                     print(f"非流式响应: {content[:100]}...")
                     return len(content) > 0
                 else:
@@ -153,19 +158,19 @@ class BackendAPITest:
         # 测试健康检查
         try:
             response = requests.get(f"{self.base_url}/", timeout=5)
-            results['health_check'] = response.status_code == 200
+            results["health_check"] = response.status_code == 200
             print(f"同步健康检查: {'✓' if results['health_check'] else '✗'}")
         except Exception as e:
-            results['health_check'] = False
+            results["health_check"] = False
             print(f"同步健康检查失败: {e}")
 
         # 测试API文档
         try:
             response = requests.get(f"{self.base_url}/docs", timeout=5)
-            results['api_docs'] = response.status_code == 200
+            results["api_docs"] = response.status_code == 200
             print(f"API文档访问: {'✓' if results['api_docs'] else '✗'}")
         except Exception as e:
-            results['api_docs'] = False
+            results["api_docs"] = False
             print(f"API文档访问失败: {e}")
 
         return results
@@ -211,10 +216,10 @@ async def run_comprehensive_test():
 
     all_results = {
         **sync_results,
-        'health_check_async': health_ok,
-        'tools_list': tools_ok,
-        'stream_chat': stream_ok,
-        'non_stream_chat': non_stream_ok
+        "health_check_async": health_ok,
+        "tools_list": tools_ok,
+        "stream_chat": stream_ok,
+        "non_stream_chat": non_stream_ok,
     }
 
     passed = sum(1 for v in all_results.values() if v)
@@ -240,11 +245,11 @@ def main():
         print("用法: python test_backend_api.py [选项]")
         print("选项:")
         print("  --help    显示帮助信息")
-        print("  --url     指定后端服务URL (默认: http://localhost:8000)")
+        print("  --url     指定后端服务URL (默认: http://localhost:8001)")
         return
 
     # 可指定不同的后端URL
-    backend_url = "http://localhost:8000"
+    backend_url = "http://localhost:8001"
     if len(sys.argv) > 1 and sys.argv[1] == "--url" and len(sys.argv) > 2:
         backend_url = sys.argv[2]
 

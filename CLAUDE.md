@@ -34,7 +34,7 @@ IntelliSearch 是一个基于 MCP (Model Context Protocol) 协议的智能搜索
 ./scripts/start_all.sh
 
 # 或手动启动
-python3 scripts/start_backend.py &    # 后端服务 (端口:8000)
+python3 scripts/start_backend.py &    # 后端服务 (端口:8001)
 python3 scripts/start_frontend.py &   # 前端服务 (端口:3000)
 ```
 
@@ -52,7 +52,7 @@ cd mcp_server/douban_search && npm install
 ### 开发调试
 ```bash
 # 后端开发服务器
-uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8000
+uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8001
 
 # 前端开发服务器
 cd docs && python3 -m http.server 3000
@@ -62,7 +62,7 @@ python3 mcp_server/web_search/server.py
 ```
 
 ### API文档
-- FastAPI自动生成: http://localhost:8000/docs
+- FastAPI自动生成: http://localhost:8001/docs
 - API交互式测试界面可用
 
 ## 开发重要文件

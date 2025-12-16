@@ -20,11 +20,11 @@ python3 -c "import requests; import aiohttp" 2>/dev/null || {
 
 # 检查后端服务是否运行
 echo "🔍 检查后端服务..."
-if ! curl -s http://localhost:8000/ > /dev/null 2>&1; then
+if ! curl -s http://localhost:8001/ > /dev/null 2>&1; then
     echo "❌ 后端服务未运行，请先启动后端服务："
     echo "   python3 scripts/start_backend.py"
     echo "   或"
-    echo "   uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8000"
+    echo "   uvicorn backend.main_fastapi:app --reload --host 0.0.0.0 --port 8001"
     exit 1
 fi
 

@@ -197,7 +197,7 @@ The styles are organized into logical modules:
 ### Local Development
 - Can be run directly from file system
 - Recommended to use a local server for module support
-- Example: `python -m http.server 8000` or `npx serve`
+- Example: `python -m http.server 8001` or `npx serve`
 
 ## 📈 Future Enhancements
 

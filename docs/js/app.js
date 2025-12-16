@@ -405,7 +405,7 @@ async function sendMessage() {
 
     // 检查是否为连接错误
     if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-      updateAssistantMessage(aiBubble, '无法连接到后端服务。请确保后端服务正在运行（http://localhost:8000）。', false);
+      updateAssistantMessage(aiBubble, '无法连接到后端服务。请确保后端服务正在运行（http://localhost:8001）。', false);
       showToast('无法连接到后端服务', 5000);
     } else {
       updateAssistantMessage(aiBubble, 'Error: ' + error.message, false);
