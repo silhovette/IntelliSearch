@@ -381,7 +381,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="deepseek-chat")
-    parser.add_argument("--max_tool_calls", type=int, default=10)
+    parser.add_argument("--max_tool_calls", type=int, default=20)
     parser.add_argument("--system_prompt", type=str, default=SYSTEM_PROMPT)
     args = parser.parse_args()
 

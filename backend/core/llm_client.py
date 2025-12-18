@@ -54,7 +54,7 @@ class LLMClient:
         self,
         messages: List[Dict[str, Any]],
         tools: Optional[Dict[str, Any]] = None,
-        max_tool_calls: int = 5
+        max_tool_calls: int = 20
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """
         流式聊天完成，支持工具调用
