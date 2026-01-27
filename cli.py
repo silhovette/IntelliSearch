@@ -11,11 +11,10 @@ import sys
 import logging
 import os
 import json
+import yaml
 from pathlib import Path
 from typing import Optional, Dict, Any
-import yaml
 from dotenv import load_dotenv
-
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
@@ -41,6 +40,7 @@ logging.basicConfig(
 from ui.theme import ThemeColors
 from ui.tool_ui import ToolUIManager
 from ui.status_manager import get_status_manager
+from ui.loading_messages import get_random_processing_message
 
 class ToolCallUI:
     """
@@ -336,13 +336,53 @@ class IntelliSearchCLI:
 
         return agent_config.get("type", "mcp_base"), final_config
 
+    def print_sai_logo(self) -> None:
+        """Display beautiful SAI-IntelliSearch logo with ASCII art."""
+        logo_art = """
+ ██████╗  █████╗ ██╗
+██╔════╝ ██╔══██╗██║
+╚█████╗  ███████║██║
+ ╚═══██╗ ██╔══██║██║
+██████╔╝ ██║  ██║██║
+╚═════╝  ╚═╝  ╚═╝╚═╝
+
+██╗███╗   ██╗████████╗███████╗██╗     ██╗     ██╗███████╗███████╗ █████╗ ██████╗  ██████╗██╗  ██╗
+██║████╗  ██║╚══██╔══╝██╔════╝██║     ██║     ██║██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║
+██║██╔██╗ ██║   ██║   █████╗  ██║     ██║     ██║███████╗█████╗  ███████║██████╔╝██║     ███████║
+██║██║╚██╗██║   ██║   ██╔══╝  ██║     ██║     ██║╚════██║██╔══╝  ██╔══██║██╔══██╗██║     ██╔══██║
+██║██║ ╚████║   ██║   ███████╗███████╗███████╗██║███████║███████╗██║  ██║██║  ██║╚██████╗██║  ██║
+╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+"""
+
+        # Apply theme color
+        logo_text = Text()
+        logo_text.append(logo_art, style=Style(color=ThemeColors.ACCENT, bold=True))
+
+        # Combine
+        full_logo = logo_text
+
+        # Display in panel
+        logo_panel = Panel(
+            full_logo,
+            border_style=Style(color=ThemeColors.PRIMARY),
+            padding=(1, 2),
+            title="[bold]v1.0.0[/bold]",
+            title_align="right",
+        )
+
+        self.console.print(logo_panel)
+
     def print_banner(self) -> None:
         """Display welcome banner and available agent types."""
         banner_text = Text()
         banner_text.append("IntelliSearch", style=Style(color=ThemeColors.ACCENT, bold=True))
-        banner_text.append(" CLI", style=Style(color=ThemeColors.SECONDARY, bold=True))
+        banner_text.append(" CLI v3.1", style=Style(color=ThemeColors.SECONDARY, bold=True))
         banner_text.append(
-            f"\n   Intelligence ",
+            f"\nThe boundaries of searching capabilities are the boundaries of agents.",
+            style=Style(color=ThemeColors.DIM),
+        )
+        banner_text.append(
+            f"\nPowered by SJTU-SAI, GeekCenter.",
             style=Style(color=ThemeColors.DIM),
         )
 
@@ -488,8 +528,12 @@ class IntelliSearchCLI:
         Display a loading spinner during agent inference.
 
         Args:
-            message: Message to display next to spinner
+            message: Message to display next to spinner (if not provided, uses random message)
         """
+        if message == "Processing":
+            # Use random message from collection
+            
+            message = get_random_processing_message()
         self.status_manager.set_processing(message)
 
     def show_summarizing_indicator(self, message: str = "Generating final response..."):
@@ -497,8 +541,12 @@ class IntelliSearchCLI:
         Display a summarizing spinner during final response generation.
 
         Args:
-            message: Message to display next to spinner
+            message: Message to display next to spinner (if not provided, uses random message)
         """
+        if message == "Generating final response...":
+            # Use random message from collection
+            from ui.loading_messages import get_random_summarizing_message
+            message = get_random_summarizing_message()
         self.status_manager.set_summarizing(message)
 
     def clear_loading_indicator(self):
@@ -711,6 +759,9 @@ class IntelliSearchCLI:
         This method runs the interactive REPL until the user exits.
         """
         self.running = True
+
+        # Display SAI logo
+        self.print_sai_logo()
 
         # Display banner
         self.print_banner()
