@@ -26,7 +26,6 @@ from prompt_toolkit.completion import WordCompleter
 from prompt_toolkit.history import FileHistory
 from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 from prompt_toolkit.styles import Style as PromptStyle
-
 from core.base import BaseAgent
 from core.factory import AgentFactory
 from core.schema import AgentRequest, AgentResponse
@@ -334,18 +333,11 @@ class IntelliSearchCLI:
         if api_key:
             final_config["api_key"] = api_key
 
-        return agent_config.get("type", "mcp_base"), final_config
+        return agent_config.get("type", "mcp_base_agent"), final_config
 
     def print_sai_logo(self) -> None:
         """Display beautiful SAI-IntelliSearch logo with ASCII art."""
         logo_art = """
- ██████╗  █████╗ ██╗
-██╔════╝ ██╔══██╗██║
-╚█████╗  ███████║██║
- ╚═══██╗ ██╔══██║██║
-██████╔╝ ██║  ██║██║
-╚═════╝  ╚═╝  ╚═╝╚═╝
-
 ██╗███╗   ██╗████████╗███████╗██╗     ██╗     ██╗███████╗███████╗ █████╗ ██████╗  ██████╗██╗  ██╗
 ██║████╗  ██║╚══██╔══╝██╔════╝██║     ██║     ██║██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║
 ██║██╔██╗ ██║   ██║   █████╗  ██║     ██║     ██║███████╗█████╗  ███████║██████╔╝██║     ███████║
@@ -353,7 +345,6 @@ class IntelliSearchCLI:
 ██║██║ ╚████║   ██║   ███████╗███████╗███████╗██║███████║███████╗██║  ██║██║  ██║╚██████╗██║  ██║
 ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 """
-
         # Apply theme color
         logo_text = Text()
         logo_text.append(logo_art, style=Style(color=ThemeColors.ACCENT, bold=True))
@@ -366,7 +357,7 @@ class IntelliSearchCLI:
             full_logo,
             border_style=Style(color=ThemeColors.PRIMARY),
             padding=(1, 2),
-            title="[bold]v1.0.0[/bold]",
+            title="[bold]SJTU-SAI Geek Center[/bold]",
             title_align="right",
         )
 
@@ -438,7 +429,7 @@ class IntelliSearchCLI:
 
         # Tips section
         tips_text = Text()
-        tips_text.append("\n💡 Tips:\n", style=Style(color=ThemeColors.ACCENT, bold=True))
+        tips_text.append("\nTips:\n", style=Style(color=ThemeColors.ACCENT, bold=True))
         tips = [
             "• Start a new session by running the CLI",
             "• Use /reset to reconfigure the agent",
@@ -773,9 +764,6 @@ class IntelliSearchCLI:
             )
             return
 
-        self.console.print(
-            Text("✓ Ready! Start typing your message below.\n", style=Style(color=ThemeColors.SUCCESS))
-        )
 
         while self.running:
             try:

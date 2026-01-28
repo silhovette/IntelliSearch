@@ -3,9 +3,9 @@
 # Can be overridden via environment variables with format: BENCHMARK_SECTION_SUBSECTION_KEY=value
 
 agent:
-  # Agent type to use (available: mcp_base)
+  # Agent type to use
   # Override with: AGENT_TYPE
-  type: mcp_base
+  type: mcp_base_agent
 
   # Agent display name
   # Override with: AGENT_NAME
