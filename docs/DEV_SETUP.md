@@ -96,7 +96,7 @@ bash start_backend.sh stop
 
 模仿 Claude Code 风格界面设计，在命令行窗口实现简单高效并且可视化的搜索智能体。
 
-![CLI Interface Demo](./assets/cli_interface_demo.png)
+![CLI Interface Demo](/assets/cli_interface_demo.png)
 
 ```bash
 python cli.py
