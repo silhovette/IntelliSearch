@@ -55,9 +55,9 @@ class MCPBaseAgent(BaseAgent):
     def __init__(
         self,
         name: str = "MCPBaseAgent",
-        model_name: str = "glm-4.5",
+        model_name: str = "deepseek-chat",
         system_prompt: str = "You are a helpful assistant",
-        server_config_path: str = "config/config.json",
+        server_config_path: str = "config/config.yaml",
         max_tool_call: int = 5,
         base_url: Optional[str] = None,
         api_key: Optional[str] = None,
@@ -173,6 +173,7 @@ class MCPBaseAgent(BaseAgent):
         """
         # Discover available tools using MCPBase component
         tools = await self.mcp_base.list_tools()
+        self.logger.info(f"Available tools nums: {len(list(tools.keys()))}")
         self.logger.info(f"Available tools: {list(tools.keys())}")
         self.tools_store = tools
 
