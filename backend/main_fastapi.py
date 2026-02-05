@@ -17,8 +17,8 @@ from core.logger import setup_logging, get_logger
 
 # Initialize global logging system
 setup_logging(
-    console_level=logging.WARNING,
-    file_level=logging.INFO
+    console_level="WARNING",
+    file_level="INFO"
 )
 
 logging.getLogger("mcp").setLevel(logging.CRITICAL)
