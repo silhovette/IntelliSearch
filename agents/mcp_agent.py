@@ -7,7 +7,6 @@ to enhance search and retrieval capabilities with multi-step reasoning.
 
 import os
 import json
-import logging
 import asyncio
 from typing import List, Dict, Any, Optional
 from datetime import datetime
@@ -17,6 +16,7 @@ from core.schema import AgentRequest, AgentResponse
 from tools.mcp_base import MCPBase
 from ui.status_manager import get_status_manager
 from memory.sequential import SequentialMemory
+from core.logger import get_logger
 
 
 class MCPBaseAgent(BaseAgent):
@@ -55,9 +55,9 @@ class MCPBaseAgent(BaseAgent):
     def __init__(
         self,
         name: str = "MCPBaseAgent",
-        model_name: str = "glm-4.5",
+        model_name: str = "deepseek-chat",
         system_prompt: str = "You are a helpful assistant",
-        server_config_path: str = "config/config.json",
+        server_config_path: str = "config/config.yaml",
         max_tool_call: int = 5,
         base_url: Optional[str] = None,
         api_key: Optional[str] = None,
@@ -88,8 +88,6 @@ class MCPBaseAgent(BaseAgent):
 
         # Setup result directory
         self.time_stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        self.result_dir = "./results"
-        os.makedirs(self.result_dir, exist_ok=True)
 
         # Initialize LLM client
         self.base_url = base_url or os.environ.get("BASE_URL")
@@ -106,7 +104,7 @@ class MCPBaseAgent(BaseAgent):
         self.available_tools = []
 
         # Setup logger
-        self.logger = logging.getLogger(__name__)
+        self.logger = get_logger(__name__)
         self.logger.info(f"{self.name} initialized with model: {self.model_name}")
 
     def inference(self, request: AgentRequest) -> AgentResponse:
@@ -175,13 +173,9 @@ class MCPBaseAgent(BaseAgent):
         """
         # Discover available tools using MCPBase component
         tools = await self.mcp_base.list_tools()
+        self.logger.info(f"Available tools nums: {len(list(tools.keys()))}")
         self.logger.info(f"Available tools: {list(tools.keys())}")
         self.tools_store = tools
-
-        # Save tools list for debugging
-        tools_file = f"./results/{self.time_stamp}_list_tools.json"
-        with open(tools_file, "w", encoding="utf-8") as f:
-            json.dump(tools, f, indent=4, ensure_ascii=False)
 
         # Format tools for LLM (OpenAI Format)
         available_tools = [
