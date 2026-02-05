@@ -77,93 +77,143 @@ env:
 all_servers:
   base_toolkit:
     command: python
-    args: mcp_server/base_toolkit/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/base_toolkit/server.py
     description: Base Toolkit for Agents providing fundamental tools and utilities
   
   operate_browser:
     command: python
-    args: mcp_server/operate_browser/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/operate_browser/server.py
     description: TODO
   
   operate_file:
     command: python
-    args: mcp_server/operate_file/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/operate_file/server.py
     description: TODO
 
   operate_python:
     command: python
-    args: mcp_server/operate_python/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/operate_python/server.py
     description: TODO
 
   operate_terminal:
     command: python
-    args: mcp_server/operate_terminal/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/operate_terminal/server.py
     description: TODO
 
   search_bilibili:
     command: python
-    args: mcp_server/search_bilibili/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_bilibili/server.py
     description: Search videos and content on Bilibili platform
 
   search_geo:
     command: python
-    args: mcp_server/search_geo/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_geo/server.py
     description: Map search and location services based on Amap (高德地图) API including routing, geocoding, and POI search
   
   search_github:
     command: python
-    args: mcp_server/search_github/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_github/server.py
     description: GitHub Search tools for repositories, code, users, issues, and pull requests
 
   search_local:
     command: python
-    args: mcp_server/search_local/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_local/server.py
     description: TODO
 
   search_movie:
     command: python
-    args: mcp_server/search_movie/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_movie/server.py
     description: Search books, movies, music and reviews on Douban platform
 
   search_sai:
     command: python
-    args: mcp_server/search_sai/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_sai/server.py
     description: TODO
 
   search_scholar:
     command: python
-    args: mcp_server/search_scholar/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_scholar/server.py
     description: Search academic papers and citations on Google Scholar and recent papers on arXiv
 
   search_train:
     command: python
-    args: mcp_server/search_train/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_train/server.py
     description: 12306 Train Search for querying train tickets, schedules, and station information in China
 
   search_web:
     command: python
-    args: mcp_server/web_search/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_web/server.py
     description: Web Search tools to get information from the internet using Google and Zhipu AI
 
   search_wechat_official_account:
     command: python
-    args: mcp_server/search_wechat/server.py
+    args: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/mcp_server/search_wechat/server.py
     description: Search articles and content from WeChat Official Accounts
 
-
 server_choice:
-  # - base_toolkit
+  - base_toolkit
   # - operate_browser
-  # - operate_file
-  # - operate_python
-  # - operate_terminal
+  - operate_file
+  - operate_python
+  - operate_terminal
   # - search_bilibili
-  # - search_geo
-  # - search_github
-  # - search_local
-  # - search_movie
+  - search_geo
+  - search_github
+  - search_local
+  - search_movie
   # - search_sai
-  # - search_scholar
-  # - search_train 
+  - search_scholar
+  - search_train 
   - search_web
-  # - search_wechat_official_account
+  - search_wechat_official_account
+
+# Tool Backend Service Configuration
+# These ports are used by backend services (IPython executor, RAG service)
+tool_backend:
+  ipython_port: 39256
+  rag_port: 39257
+
+
+rag:
+  # Embedding model configuration
+  embedding:
+    # Path to embedding model (supports local path or HuggingFace model ID)
+    # Override with: RAG_EMBEDDING_MODEL_PATH
+    model_path: "./models/all-MiniLM-L6-v2"
+
+    # Device to run embedding model on: cpu, mps (Apple Silicon), cuda
+    # Override with: RAG_EMBEDDING_DEVICE
+    device: "cpu"
+
+  # Vector index configuration
+  index:
+    # Path to store/load vector index
+    # Override with: RAG_INDEX_PATH
+    path: "./data/rag_index"
+
+    # Whether to store original content in index
+    # Override with: RAG_INDEX_CONTENT
+    content: true
+
+  # Document processing configuration
+  documents:
+    # Text chunk size for document splitting
+    # Override with: RAG_DOCUMENTS_CHUNK_SIZE
+    chunk_size: 500
+
+    # Overlap between chunks
+    # Override with: RAG_DOCUMENTS_OVERLAP
+    overlap: 50
+
+  # Search/retrieval configuration
+  search:
+    # Default number of results to return
+    # Override with: RAG_SEARCH_DEFAULT_LIMIT
+    default_limit: 5
+
+    # Minimum similarity score threshold (0.0 - 1.0)
+    # Override with: RAG_SEARCH_SCORE_THRESHOLD
+    score_threshold: 0.7
+  
+  initialization:
+    load_dir: /Users/xiyuanyang/Desktop/Dev/IntelliSearch-v2/data/RAG

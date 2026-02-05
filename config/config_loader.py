@@ -30,7 +30,7 @@ class Config:
     _instance: Optional["Config"] = None
     _config: Optional[Dict[str, Any]] = None
 
-    def __init__(self, config_file_path: str = None):
+    def __init__(self, config_file_path: str = "config/config.yaml"):
         """
         Initialize the Config instance.
 
@@ -151,6 +151,59 @@ class Config:
                 return default
 
         return value
+
+    def get_with_env(
+        self, key_path: str, default: Any = None, env_prefix: str = "TOOL_BACKEND"
+    ) -> Any:
+        """
+        Get configuration value with environment variable override support.
+
+        This method checks for environment variables first before falling back to
+        the configuration file. Environment variables should be named in format:
+        {PREFIX}_{SECTION}_{KEY}, where sections are converted from dot notation.
+
+        Args:
+            key_path: Dot-separated configuration path, e.g. 'tool_backend.ipython_backend_port'
+            default: Default value if path not found
+            env_prefix: Prefix for environment variables (default: "TOOL_BACKEND")
+
+        Returns:
+            Configuration value from environment variable or config file
+
+        Example:
+            >>> # With env var TOOL_BACKEND_IPYTHON_BACKEND_PORT=8080
+            >>> config.get_with_env("tool_backend.ipython_backend_port")
+            8080
+            >>> # With config: tool_backend.ipython_backend_port: 39256
+            >>> config.get_with_env("tool_backend.ipython_backend_port")
+            39256
+        """
+        if Config._config is None:
+            raise RuntimeError(
+                "Config not loaded. Call load_config() first."
+            )
+
+        # *Generate environment variable name, for tool backends
+        # Convert: "tool_backend.ipython_backend_port" -> "TOOL_BACKEND_IPYTHON_BACKEND_PORT"
+        env_var_name = "_".join(key_path.split(".")).upper()
+        full_env_var_name = f"{env_prefix}_{env_var_name}" if env_prefix else env_var_name
+
+        # Check environment variable first
+        if full_env_var_name in os.environ:
+            env_value = os.environ[full_env_var_name]
+            # Try to convert to appropriate type
+            if isinstance(default, int):
+                try:
+                    return int(env_value)
+                except ValueError:
+                    return default
+            elif isinstance(default, bool):
+                return env_value.lower() in ("true", "1", "yes")
+            else:
+                return env_value
+
+        # Fall back to config file
+        return self.get(key_path, default)
 
     @property
     def data(self) -> Dict[str, Any]:

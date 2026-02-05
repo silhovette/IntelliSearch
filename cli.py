@@ -9,7 +9,6 @@ MCP tool calls, and conversation management.
 
 import sys
 import os
-import logging
 import yaml
 import re
 from pathlib import Path
@@ -28,18 +27,12 @@ from prompt_toolkit.styles import Style as PromptStyle
 from core.base import BaseAgent
 from core.factory import AgentFactory
 from core.schema import AgentRequest, AgentResponse
-from core.logger import setup_logging, get_logger
+from core.logger import get_logger
 from config.config_loader import Config
 
 # Initialize global configuration and load environment variables
 config = Config(config_file_path="config/config.yaml")
 config.load_config(override=True)
-
-# Initialize global logging system
-setup_logging(
-    console_level=logging.WARNING,
-    file_level=logging.INFO
-)
 
 # Import theme colors
 from ui.theme import ThemeColors

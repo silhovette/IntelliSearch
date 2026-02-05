@@ -96,14 +96,14 @@ class IntelliSearchLogger:
             color="<fg #00CFFF>",
         )
 
-    def _generate_log_filename(self) -> str:
+    def _generate_log_filename(self, name) -> str:
         """
         Generate a timestamped log filename.
 
         Returns:
             Filename with session start timestamp
         """
-        return f"intellisearch_main.log"
+        return f"intellisearch_{name}.log"
 
     def _get_log_format(self, *, with_color: bool = False) -> str:
         """
@@ -130,7 +130,7 @@ class IntelliSearchLogger:
                 "{message}"
             )
 
-    def initialize(self) -> None:
+    def initialize(self, name="main") -> None:
         """
         Initialize the global logging system.
 
@@ -144,7 +144,7 @@ class IntelliSearchLogger:
         self._create_log_directory()
 
         # Generate log file path
-        log_filename = self._generate_log_filename()
+        log_filename = self._generate_log_filename(name=name)
         self.log_file_path = self.log_dir / log_filename
 
         # Add console handler with color
